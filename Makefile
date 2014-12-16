@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = bins/libft.a
+NAME = libft.a
 SRCS = $(wildcard srcs/*.c)
 OBJS = $(patsubst srcs%, objs%, $(patsubst %.c, %.o, $(SRCS)))
 FLAGS = -Wall -Wextra -Werror
@@ -18,7 +18,7 @@ FLAGS = -Wall -Wextra -Werror
 all : $(NAME)
 
 objs/%.o : srcs/%.c
-	gcc -c $< -o $@ $(FLAGS) -I includes
+	gcc -c $< -o $@ $(FLAGS) -Iincludes
 
 $(NAME) : $(OBJS)
 	ar -rs $(NAME) $^

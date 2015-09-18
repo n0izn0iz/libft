@@ -1,0 +1,198 @@
+#include <libft.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include "helpers.h"
+
+#test test_atoi
+	fail_unless(ft_atoi("42") == 42, "atoi failed for positive number");
+	fail_unless(ft_atoi("0") == 0, "atoi failed for 0");
+	fail_unless(ft_atoi("-42") == -42, "atoi failed for negative number");
+
+#test test_bzero
+	int sz = sizeof("jambon");
+	char* str = strdup("jambon");
+	ft_bzero(str, sz - 1);
+	int i = 0;
+	while (i < sz)
+	{
+		fail_unless(str[i] == '\0', "some character is not '\\0'");
+		i++;
+	}
+	free(str);
+
+#test test_isalnum
+	char c = -128;
+	while (c < 127)
+	{
+		fail_unless(ft_isalnum(c) == isalnum(c), "output differ from stdlib");
+		c++;
+	}
+
+#test test_isalpha
+	char c = -128;
+	while (c < 127)
+	{
+		fail_unless(ft_isalpha(c) == isalpha(c), "output differ from stdlib");
+		c++;
+	}
+
+#test test_isascii
+	char c = -128;
+	while (c < 127)
+	{
+		fail_unless(ft_isascii(c) == isascii(c), "output differ from stdlib");
+		c++;
+	}
+
+#test test_isdigit
+	char c = -128;
+	while (c < 127)
+	{
+		fail_unless(ft_isdigit(c) == isdigit(c), "output differ from stdlib");
+		c++;
+	}
+
+#test test_isprint
+	char c = -128;
+	while (c < 127)
+	{
+		fail_unless(ft_isprint(c) == isprint(c), "output differ from stdlib");
+		c++;
+	}
+
+#test test_itoa
+	char* result;
+	result = ft_itoa(42);
+	fail_unless(strcmp(result, "42") == 0, "itoa failed for positive number");
+	free(result);
+	result = ft_itoa(0);
+	fail_unless(strcmp(result, "0") == 0, "itoa failed for 0");
+	free(result);
+	result = ft_itoa(-42);
+	fail_unless(strcmp(result, "-42") == 0, "itoa failed for negative number");
+	free(result);
+
+#test test_memalloc
+
+#test test_memccpy
+
+#test test_memchr
+
+#test test_memcmp
+
+#test test_memcpy
+
+#test test_memdel
+
+#test test_memmove
+
+#test test_memset
+
+#test test_putchar
+
+#test test_putchar_fd
+
+#test test_putendl
+
+#test test_putendl_fd
+
+#test test_putnbr
+
+#test test_putnbr_fd
+
+#test test_putstr
+
+#test test_putstr_fd
+
+#test test_strcat
+
+#test test_strchr
+
+#test test_strclr
+
+#test test_strcmp
+
+#test test_strcpy
+
+#test test_strdel
+
+#test test_strdup
+
+#test test_strequ
+
+#test test_striter
+
+#test test_striteri
+
+#test test_strjoin
+
+#test test_strlcat
+
+#test test_strlen
+
+#test test_strmap
+
+#test test_strmapi
+
+#test test_strncat
+
+#test test_strncmp
+
+#test test_strncpy
+
+#test test_strnequ
+
+#test test_strnew
+
+#test test_strnstr
+
+#test test_strrchr
+
+#test test_strsplit
+
+#test test_strstr
+
+#test test_strsub
+
+#test test_strtrim
+
+#test test_tolower
+
+#test test_toupper
+
+#test test_lstnew
+	t_list* lst = ft_lstnew(NULL, 42);
+	fail_unless(lst->content == NULL, "lstnew did not set content to NULL");
+	fail_unless(lst->content_size == 0, "lstnew did not set content_size to 0");
+	free(lst);
+	size_t sz = sizeof("jambon");
+	char* ptr = "jambon";
+	lst = ft_lstnew(ptr, 7);
+	fail_unless(lst->next == NULL, "lstnew did not set next to NULL");
+	fail_unless(lst->content != ptr, "lstnew did not make a copy");
+	fail_unless(lst->content_size == sz, "lstnew failed to copy the content size");
+	fail_unless(strcmp(lst->content, ptr) == 0, "lstnew failed to copy the content");
+
+#test test_lstdelone
+	/* INCOMPLETE TEST */
+	t_list* lst = ft_lstnew(NULL, 0);
+	t_list* next = ft_lstnew(NULL, 0);
+	lst->next = next;
+	ft_lstdelone(&lst, del_lst_content);
+	fail_unless(lst == NULL);
+	free(next);
+
+#test test_lstdel
+	/* INCOMPLETE TEST */
+	t_list* lst = ft_lstnew(NULL, 0);
+	t_list* next = ft_lstnew(NULL, 0);
+	lst->next = next;
+	ft_lstdel(&lst, del_lst_content);
+	fail_unless(lst == NULL);
+
+#test test_lstadd
+
+#test test_lstiter
+
+#test test_lstmap

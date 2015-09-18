@@ -1,17 +1,28 @@
+#include "helpers.h"
+
 #include <libft.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "helpers.h"
+#include <stdio.h>
+#include <limits.h>
 
-#test test_atoi
-	fail_unless(ft_atoi("42") == 42, "atoi failed for positive number");
-	fail_unless(ft_atoi("0") == 0, "atoi failed for 0");
-	fail_unless(ft_atoi("-42") == -42, "atoi failed for negative number");
+#define TEST_STR "jambon"
+
+#test test_memset
+	size_t sz = 42;
+	char c = 'a';
+	char* str1 = malloc(sizeof(char) * sz);
+	char* str2 = malloc(sizeof(char) * sz);
+	ft_memset(str1, c, sz);
+	memset(str2, c, sz);
+	fail_unless(memcmp(str1, str2, sz) == 0, "some character is not 'a'");
+	ft_memset(str1, c, 0);
+	fail_unless(memcmp(str1, str2, sz) == 0, "memset wrote data with n == 0");
 
 #test test_bzero
-	int sz = sizeof("jambon");
-	char* str = strdup("jambon");
+	int sz = sizeof(TEST_STR);
+	char* str = strdup(TEST_STR);
 	ft_bzero(str, sz - 1);
 	int i = 0;
 	while (i < sz)
@@ -21,73 +32,87 @@
 	}
 	free(str);
 
-#test test_isalnum
-	char c = -128;
-	while (c < 127)
-	{
-		fail_unless(ft_isalnum(c) == isalnum(c), "output differ from stdlib");
-		c++;
-	}
-
-#test test_isalpha
-	char c = -128;
-	while (c < 127)
-	{
-		fail_unless(ft_isalpha(c) == isalpha(c), "output differ from stdlib");
-		c++;
-	}
-
-#test test_isascii
-	char c = -128;
-	while (c < 127)
-	{
-		fail_unless(ft_isascii(c) == isascii(c), "output differ from stdlib");
-		c++;
-	}
-
-#test test_isdigit
-	char c = -128;
-	while (c < 127)
-	{
-		fail_unless(ft_isdigit(c) == isdigit(c), "output differ from stdlib");
-		c++;
-	}
-
-#test test_isprint
-	char c = -128;
-	while (c < 127)
-	{
-		fail_unless(ft_isprint(c) == isprint(c), "output differ from stdlib");
-		c++;
-	}
-
-#test test_itoa
-	char* result;
-	result = ft_itoa(42);
-	fail_unless(strcmp(result, "42") == 0, "itoa failed for positive number");
-	free(result);
-	result = ft_itoa(0);
-	fail_unless(strcmp(result, "0") == 0, "itoa failed for 0");
-	free(result);
-	result = ft_itoa(-42);
-	fail_unless(strcmp(result, "-42") == 0, "itoa failed for negative number");
-	free(result);
-
-#test test_memalloc
+#test test_memcpy
+	size_t sz = sizeof(TEST_STR);
+	char* dstr = malloc(sz);
+	fail_unless(ft_memcpy(dstr, TEST_STR, sz) == dstr, "memcpy did not return s1");
+	fail_unless(memcmp(dstr, TEST_STR, sz) == 0, "memcpy failed to copy the data");
+	ft_memcpy(dstr, "error", 0);
+	fail_unless(memcmp(dstr, TEST_STR, sz) == 0, "memcpy wrote data with n == 0");
 
 #test test_memccpy
+
+#test test_memmove
+
+#test test_atoi
+	fail_unless(ft_atoi("42") == 42, "atoi failed for positive number");
+	fail_unless(ft_atoi("0") == 0, "atoi failed for 0");
+	fail_unless(ft_atoi("-42") == -42, "atoi failed for negative number");
+
+#test test_isalnum
+	test_isfunc(ft_isalnum, isalnum);
+
+#test test_isalpha
+	test_isfunc(ft_isalpha, isalpha);
+
+#test test_isascii
+	test_isfunc(ft_isascii, isascii);
+
+#test test_isdigit
+	test_isfunc(ft_isdigit, isdigit);
+
+#test test_isprint
+	test_isfunc(ft_isprint, isprint);
+
+#test test_itoa
+	int i = INT_MIN;
+	char* str = strdup("output differ from stdlib for                                        ");
+	char* ostr = malloc(sizeof(char) * 30);
+	printf("Running itoa test, this could take a long time, we're checking all possible values of an int\n");
+	fflush (stdout);
+	int error = 0;
+	int lastpercent = 0;
+	int currpercent = 0;
+	while (1)
+	{
+		char* tstr = ft_itoa(i);
+		itoa(i, ostr, 10);
+		if (strcmp(tstr, ostr) != 0)
+		{
+			error = 1;
+			break;
+		}
+		free(tstr);
+		if (i == INT_MAX)
+			break;
+		if (i < 0)
+			currpercent = (1.0 - ((double)i) / INT_MIN) * 50.0;
+		else if (i == 0)
+			currpercent = 50;
+		else
+			currpercent = 50 + (((double)i / INT_MAX) * 50.0);
+		if (currpercent != lastpercent)
+		{
+			printf("%d%% (%d)\n", currpercent, i);
+			fflush (stdout);
+			lastpercent = currpercent;
+		}
+		i++;
+	}
+	strcpy(str + 30, ostr);
+	if (error)
+		fail(str);
+	printf("Done\n");
+	fflush (stdout);
+	free(str);
+
+#test test_memalloc
 
 #test test_memchr
 
 #test test_memcmp
 
-#test test_memcpy
-
 #test test_memdel
-
-#test test_memmove
-
-#test test_memset
 
 #test test_putchar
 
@@ -166,8 +191,8 @@
 	fail_unless(lst->content == NULL, "lstnew did not set content to NULL");
 	fail_unless(lst->content_size == 0, "lstnew did not set content_size to 0");
 	free(lst);
-	size_t sz = sizeof("jambon");
-	char* ptr = "jambon";
+	size_t sz = sizeof(TEST_STR);
+	char* ptr = TEST_STR;
 	lst = ft_lstnew(ptr, 7);
 	fail_unless(lst->next == NULL, "lstnew did not set next to NULL");
 	fail_unless(lst->content != ptr, "lstnew did not make a copy");
@@ -175,7 +200,7 @@
 	fail_unless(strcmp(lst->content, ptr) == 0, "lstnew failed to copy the content");
 
 #test test_lstdelone
-	/* INCOMPLETE TEST */
+	printf("test_lstdelone is incomplete\n");
 	t_list* lst = ft_lstnew(NULL, 0);
 	t_list* next = ft_lstnew(NULL, 0);
 	lst->next = next;
@@ -184,7 +209,7 @@
 	free(next);
 
 #test test_lstdel
-	/* INCOMPLETE TEST */
+	printf("test_lstdel is incomplete\n");
 	t_list* lst = ft_lstnew(NULL, 0);
 	t_list* next = ft_lstnew(NULL, 0);
 	lst->next = next;

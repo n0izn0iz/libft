@@ -11,7 +11,10 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <limits.h>
 #include <stdlib.h>
+
+#define COMPILE_TIME_ASSERT( x ) switch ( x )   {   case 0:     break;   case ( x ):     break;   }
 
 #define BUFSIZE 20
 
@@ -25,7 +28,7 @@ static inline int	absol(int *n)
 	return (0);
 }
 
-static void			loop(char *buf, int *n, int *i)
+static inline void	loop(char *buf, int *n, int *i)
 {
 	while (*n >= 10)
 	{
@@ -42,7 +45,9 @@ char				*ft_itoa(int n)
 	int		neg;
 	int		i;
 
-	if (n == -2147483648)
+	COMPILE_TIME_ASSERT(sizeof(int) == (4));
+
+	if (n == INT_MIN)
 		return (ft_strcpy(ft_strnew(11), "-2147483648"));
 	buf = ft_strnew(BUFSIZE);
 	if (buf != NULL)
@@ -50,7 +55,7 @@ char				*ft_itoa(int n)
 		i = 1;
 		neg = absol(&n);
 		loop(buf, &n, &i);
-		buf[BUFSIZE - i] = n + 48;
+		buf[BUFSIZE - i] = '0' + n;
 		if (neg)
 		{
 			i++;

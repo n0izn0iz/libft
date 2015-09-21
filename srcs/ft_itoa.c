@@ -45,7 +45,7 @@ char				*ft_itoa(int n)
 	int		neg;
 	int		i;
 
-	COMPILE_TIME_ASSERT(sizeof(int) == (4));
+	COMPILE_TIME_ASSERT((int)(sizeof(int) == (4)));
 
 	if (n == INT_MIN)
 		return (ft_strcpy(ft_strnew(11), "-2147483648"));

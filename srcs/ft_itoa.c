@@ -14,7 +14,7 @@
 #include <limits.h>
 #include <stdlib.h>
 
-#define COMPILE_TIME_ASSERT( x ) switch ( x )   {   case 0:     break;   case ( x ):     break;   }
+#define COMPILE_TIME_ASSERT(x) switch (x) {case 0: break; case (x): break;}
 
 #define BUFSIZE 20
 
@@ -46,7 +46,6 @@ char				*ft_itoa(int n)
 	int		i;
 
 	COMPILE_TIME_ASSERT((int)(sizeof(int) == (4)));
-
 	if (n == INT_MIN)
 		return (ft_strcpy(ft_strnew(11), "-2147483648"));
 	buf = ft_strnew(BUFSIZE);

@@ -1,19 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl.c                                       :+:      :+:    :+:   */
+/*   ft_ptrarray.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/06 13:45:50 by nmeier            #+#    #+#             */
-/*   Updated: 2014/11/06 13:47:21 by nmeier           ###   ########.fr       */
+/*   Created: 2015/10/22 17:44:01 by nmeier            #+#    #+#             */
+/*   Updated: 2015/10/22 17:44:11 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putendl(char const *s)
+#include <stdlib.h>
+
+size_t			ft_ptrarraysize(void *ptrarray)
 {
-	ft_putstr(s);
-	ft_putchar('\n');
+	void	**cast;
+	size_t	size;
+
+	size = 0;
+	cast = ptrarray;
+	while (cast[size])
+		size++;
+	return (size);
+}
+
+void			ft_freeptrarray(void *ptrarray)
+{
+	void	**cast;
+
+	cast = ptrarray;
+	while (*cast)
+	{
+		free(*cast);
+		cast++;
+	}
+	free(ptrarray);
 }

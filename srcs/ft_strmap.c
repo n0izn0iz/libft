@@ -13,7 +13,7 @@
 #include "libft.h"
 #include <stdlib.h>
 
-char *ft_strmap(char const *s, char (*f)(char))
+char	*ft_strmap(char const *s, char (*f)(char))
 {
 	char			*result;
 	unsigned int	len;
